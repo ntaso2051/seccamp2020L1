@@ -4,14 +4,40 @@ import sympy
 
 
 class Elgamal:
-    p = 7
+    p = 2243
+    g = -1
+    x = -1
+    y = -1
 
     def keygen(self):
-        g = sympy.primitive_root(self.p)
-        x = random.randint(0, self.p - 1)
-        y = pow(g, x, self.p)
-        return (self.p, g, y), x
+        self.g = sympy.primitive_root(self.p)
+        self.x = random.randint(0, self.p - 1)
+        self.y = pow(self.g, self.x, self.p)
+        return (self.p, self.g, self.y), self.x
+
+    def encrypto(self, m):
+        cipher = []
+        r = random.randint(0, self.p - 1)
+        c1 = pow(self.g, r, self.p)
+        for l in m:
+            c2 = (ord(l) * pow(self.y, r, self.p)) % self.p
+            cipher.append(c2)
+        return (c1, cipher)
+
+    def decrypto(self, c1, c2):
+        decode = ''
+        d = pow(c1, self.p - 1 - self.x, self.p)
+        for cc in c2:
+            m = (cc * d) % self.p
+            decode += chr(m)
+        return decode
 
 
 el = Elgamal()
-print(el.keygen())
+pk, sk = el.keygen()
+c1, c2 = el.encrypto('abcs')
+print(pk, sk)
+print(c1)
+print(c2)
+dec = el.decrypto(c1, c2)
+print(dec)
