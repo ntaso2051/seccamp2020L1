@@ -16,19 +16,19 @@ class Elgamal:
         return (self.p, self.g, self.y), self.x
 
     def encrypto(self, m):
-        cipher = []
+        cipher2 = []
         r = random.randint(0, self.p - 1)
         c1 = pow(self.g, r, self.p)
         for l in m:
             c2 = (ord(l) * pow(self.y, r, self.p)) % self.p
-            cipher.append(c2)
-        return (c1, cipher)
+            cipher2.append(c2)
+        return (c1, cipher2)
 
     def decrypto(self, c1, c2):
         decode = ''
         d = pow(c1, self.p - 1 - self.x, self.p)
-        for cc in c2:
-            m = (cc * d) % self.p
+        for c in c2:
+            m = (c * d) % self.p
             decode += chr(m)
         return decode
 
