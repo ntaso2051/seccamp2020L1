@@ -18,11 +18,11 @@ class Elgamal:
     def encrypto(self, m):
         cipher2 = []
         r = random.randint(0, self.p - 1)
-        c1 = pow(self.g, r, self.p)
+        cipher1 = pow(self.g, r, self.p)
         for l in m:
             c2 = (ord(l) * pow(self.y, r, self.p)) % self.p
             cipher2.append(c2)
-        return (c1, cipher2)
+        return (cipher1, cipher2)
 
     def decrypto(self, c1, c2):
         decode = ''
