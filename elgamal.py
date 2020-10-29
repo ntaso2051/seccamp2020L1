@@ -10,7 +10,7 @@ class Elgamal:
     y = -1
 
     def __is_even(self, n):  
-        if n & 1 == 0:
+        if n % 2 == 0:
             return True
         else:
             return False
@@ -85,7 +85,7 @@ class Elgamal:
 
 
 el = Elgamal()
-pk, sk = el.keygen(50)
+pk, sk = el.keygen(8)
 c1, c2 = el.encrypto('abcs')
 print(pk, sk)
 print(c1)
