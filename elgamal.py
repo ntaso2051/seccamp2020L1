@@ -9,7 +9,58 @@ class Elgamal:
     x = -1
     y = -1
 
-    def keygen(self):
+    def __is_even(self, n):  
+        if n & 1 == 0:
+            return True
+        else:
+            return False
+
+    def __is_prime(self, n):  
+        if n == 2:
+            return True
+        if n <= 1 or self.__is_even(n):
+            return False
+
+        d = (n - 1) >> 1
+        while self.__is_even(n):
+            d >>= 1
+
+        for i in range(100):
+            a = random.randint(1, n-1)
+            t = d
+            y = pow(a, t, n)
+
+            while t != n - 1 and y != 1 and y != n - 1:
+                y = pow(y, 2, n)
+                t <<= 1
+
+            if y != n - 1 and self.__is_even(t):
+                return False
+
+        return True
+
+    def __get_prime(self, k):
+        if(1 << k <= 1):
+            return -1
+
+        while(True):
+            q = random.randint(1 << (k-2), 1 << (k-1))
+            if(self.__is_even(q)):
+                q += 1
+            if(self.__is_prime(q)):
+                break
+
+        return q
+
+    def keygen(self, k):
+        c = 1
+        _p = 1
+        while(1):
+            q = self.__get_prime(k)
+            _p = 2 * q * c + 1
+            if (self.__is_prime(_p)):
+                break
+        self.p = _p
         self.g = sympy.primitive_root(self.p)
         self.x = random.randint(0, self.p - 1)
         self.y = pow(self.g, self.x, self.p)
@@ -34,7 +85,7 @@ class Elgamal:
 
 
 el = Elgamal()
-pk, sk = el.keygen()
+pk, sk = el.keygen(50)
 c1, c2 = el.encrypto('abcs')
 print(pk, sk)
 print(c1)
