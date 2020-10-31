@@ -5,17 +5,19 @@ import sympy
 
 class Elgamal:
     p = 2243
+    q = -1
     g = -1
     x = -1
     y = -1
+    G = -1
 
-    def __is_even(self, n):  
+    def __is_even(self, n):
         if n % 2 == 0:
             return True
         else:
             return False
 
-    def __is_prime(self, n):  
+    def __is_prime(self, n):
         if n == 2:
             return True
         if n <= 1 or self.__is_even(n):
@@ -44,49 +46,51 @@ class Elgamal:
             return -1
 
         while(True):
-            q = random.randint(1 << (k-2), 1 << (k-1))
-            if(self.__is_even(q)):
-                q += 1
-            if(self.__is_prime(q)):
+            _q = random.randint(1 << (k-2), 1 << (k-1))
+            if(self.__is_even(_q)):
+                _q += 1
+            if(self.__is_prime(_q)):
                 break
 
-        return q
+        return _q
 
     def keygen(self, k):
         c = 1
         _p = 1
         while(1):
-            q = self.__get_prime(k)
-            _p = 2 * q * c + 1
+            _q = self.__get_prime(k)
+            _p = 2 * _q * c + 1
             if (self.__is_prime(_p)):
+                self.q = _q
                 break
         self.p = _p
         self.g = sympy.primitive_root(self.p)
-        self.x = random.randint(0, self.p - 1)
-        self.y = pow(self.g, self.x, self.p)
-        return (self.p, self.g, self.y), self.x
+        self.G = pow(self.g, 2, self.p)
+        self.x = random.randint(0, self.q - 1)
+        self.y = pow(self.g, self.x, self.q)
+        return (self.G, self.q, self.g), self.x
 
     def encrypto(self, m):
         cipher2 = []
-        r = random.randint(0, self.p - 1)
-        cipher1 = pow(self.g, r, self.p)
+        r = random.randint(0, self.q - 1)
+        cipher1 = pow(self.g, r, self.q)
         for l in m:
-            c2 = (ord(l) * pow(self.y, r, self.p)) % self.p
+            c2 = (ord(l) * pow(self.y, r, self.q)) % self.q
             cipher2.append(c2)
         return (cipher1, cipher2)
 
     def decrypto(self, c1, c2):
         decode = ''
-        d = pow(c1, self.p - 1 - self.x, self.p)
+        d = pow(c1, (-1) * self.x, self.q)
         for c in c2:
-            m = (c * d) % self.p
+            m = (c * d) % self.q
             decode += chr(m)
         return decode
 
 
 el = Elgamal()
-pk, sk = el.keygen(8)
-c1, c2 = el.encrypto('sasaki')
+pk, sk = el.keygen(28)
+c1, c2 = el.encrypto('abcfffghij')
 print(pk, sk)
 print(c1)
 print(c2)
