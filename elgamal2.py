@@ -66,6 +66,7 @@ class Elgamal:
         self.p = _p
         self.g = sympy.primitive_root(self.p)
         _G = pow(self.g, 2, self.p)
+        # \alpha = g^{\frac{p-1}{q}} = g^{\frac{2q+1-1}{q}} = g^2
         self.G = pow(_G, random.randint(0, self.q-1), self.q)
         self.x = random.randint(0, self.q - 1)
         self.y = pow(self.g, self.x, self.q)
@@ -90,7 +91,7 @@ class Elgamal:
 
 
 el = Elgamal()
-pk, sk = el.keygen(16)
+pk, sk = el.keygen(512)
 c1, c2 = el.encrypto('HelloWorld!!')
 print(pk, sk)
 print(c1)

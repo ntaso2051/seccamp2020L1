@@ -4,18 +4,18 @@ import sympy
 
 
 class Elgamal:
-    p = 2243
+    p = -1
     g = -1
     x = -1
     y = -1
 
-    def __is_even(self, n):  
+    def __is_even(self, n):
         if n % 2 == 0:
             return True
         else:
             return False
 
-    def __is_prime(self, n):  
+    def __is_prime(self, n):
         if n == 2:
             return True
         if n <= 1 or self.__is_even(n):
@@ -85,8 +85,8 @@ class Elgamal:
 
 
 el = Elgamal()
-pk, sk = el.keygen(8)
-c1, c2 = el.encrypto('sasaki')
+pk, sk = el.keygen(16)
+c1, c2 = el.encrypto('HelloWorld!!')
 print(pk, sk)
 print(c1)
 print(c2)
