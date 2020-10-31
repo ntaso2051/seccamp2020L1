@@ -4,7 +4,7 @@ import sympy
 
 
 class Elgamal:
-    p = 2243
+    p = -1
     q = -1
     g = -1
     x = -1
@@ -65,7 +65,8 @@ class Elgamal:
                 break
         self.p = _p
         self.g = sympy.primitive_root(self.p)
-        self.G = pow(self.g, 2, self.p)
+        _G = pow(self.g, 2, self.p)
+        self.G = pow(_G, random.randint(0, self.q-1), self.q)
         self.x = random.randint(0, self.q - 1)
         self.y = pow(self.g, self.x, self.q)
         return (self.G, self.q, self.g), self.x
@@ -89,8 +90,8 @@ class Elgamal:
 
 
 el = Elgamal()
-pk, sk = el.keygen(28)
-c1, c2 = el.encrypto('abcfffghij')
+pk, sk = el.keygen(16)
+c1, c2 = el.encrypto('HelloWorld!!')
 print(pk, sk)
 print(c1)
 print(c2)
