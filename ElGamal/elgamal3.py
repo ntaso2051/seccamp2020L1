@@ -6,10 +6,10 @@ import sympy
 class Elgamal:
     p = -1
     q = -1
-    g = -1
+    # g = -1
     x = -1
-    y = -1
-    G = -1
+    # y = -1
+    # G = -1
     a = -1
     b = -1
     pos = (1, 1)
@@ -164,7 +164,7 @@ class Elgamal:
 
 
 el = Elgamal()
-pk, sk = el.keygen(16)
+pk, sk = el.keygen(8)
 c1, c2 = el.encrypto('HelloWorld!!')
 print(pk, sk)
 print(c1)
