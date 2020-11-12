@@ -11,12 +11,25 @@ a = 1
 b = 2
 pos=[]
 
-for x in range(11):
-    for y in range(11):
-        if(y*y % 11 == (x*x*x+a*x+b) % 11):
-            # print(x, y)
-            pos.append((x, y))
-        
+# for x in range(11):
+#     for y in range(11):
+#         if(y*y % 11 == (x*x*x+a*x+b) % 11):
+#             # print(x, y)
+#             pos.append((x, y))
+
+
+s = [0]*11
+for j in range((p-1)//2+1):
+    s[j*j % p] = j
+print(s)
+
+for x in range(p):
+    z = (x*x*x % 11+a*x % 11+b) % 11
+    c = int((p-1)/2)
+    if(pow(z, c, p) == 1):
+        # print(x)
+        pos.append((x, s[z]))
+        pos.append((x, 11-s[z]))
 
 def add(x1, y1, x2, y2, a):
     if(x1 == x2 and (y1+y2) % 11 == 0):
