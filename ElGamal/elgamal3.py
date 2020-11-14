@@ -114,12 +114,6 @@ class Elgamal:
                 self.q = _q
                 break
         self.p = _p
-        # self.g = sympy.primitive_root(self.p)
-        # _G = pow(self.g, 2, self.p)
-        # \alpha = g^{\frac{p-1}{q}} = g^{\frac{2q+1-1}{q}} = g^2
-        # self.G = pow(_G, random.randint(0, self.q-1), self.q)
-        # self.x = random.randint(0, self.q2 - 1)
-        # self.y = pow(self.g, self.x, self.q)
         while(1):
             self.a = random.randint(1, self.p-1)
             self.b = random.randint(1, self.p-1)
