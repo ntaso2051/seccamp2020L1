@@ -55,11 +55,7 @@ class Elgamal:
     def keygen(self, k):
         c = 1
         _p = 1
-        while(1):
-            q = self.__get_prime(k)
-            _p = 2 * q * c + 1
-            if (self.__is_prime(_p)):
-                break
+        _p=self.__get_prime(k)
         self.p = _p
         self.g = sympy.primitive_root(self.p)
         self.x = random.randint(0, self.p - 1)
@@ -85,7 +81,7 @@ class Elgamal:
 
 
 el = Elgamal()
-pk, sk = el.keygen(64)
+pk, sk = el.keygen(8)
 c1, c2 = el.encrypto('HelloWorld!!')
 print(pk, sk)
 print(c1)
