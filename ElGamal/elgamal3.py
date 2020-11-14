@@ -5,7 +5,7 @@ import sympy
 
 class Elgamal:
     p = -1
-    q = -1
+    # q = -1
     # g = -1
     x = -1
     # y = -1
