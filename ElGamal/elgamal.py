@@ -4,10 +4,11 @@ import sympy
 
 
 class Elgamal:
-    p = -1
-    g = -1
-    x = -1
-    y = -1
+    def __init__(self):
+        self.p = -1
+        self.g = -1
+        self.x = -1
+        self.y = -1
 
     def __is_even(self, n):
         if n % 2 == 0:

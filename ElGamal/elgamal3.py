@@ -4,18 +4,19 @@ import sympy
 
 
 class Elgamal:
-    p = -1
-    # q = -1
-    # g = -1
-    x = -1
-    # y = -1
-    # G = -1
-    a = -1
-    b = -1
-    pos = (1, 1)
-    q2 = -1
-    Y = (1, 1)
-    poss = []
+    def __init__(self):
+        self.p = -1
+        # q = -1
+        # g = -1
+        self.x = -1
+        # y = -1
+        # G = -1
+        self.a = -1
+        self.b = -1
+        self.pos = (1, 1)
+        self.q2 = -1
+        self.Y = (1, 1)
+        self.poss = []
 
     def __is_even(self, n):
         if n % 2 == 0:
