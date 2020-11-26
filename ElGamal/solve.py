@@ -22,7 +22,7 @@ def modinv(a, m):
     else:
         return x % m
 
-def chinese_remainder(a, n):
+def chineseRemainder(a, n):
     total = 0
     prod = reduce(lambda x, y: x*y, n)
     for n_i, a_i in zip(n, a):
@@ -66,7 +66,7 @@ for f in fact:
 
 print(rem)
 
-ans=chinese_remainder(rem, fact)
+ans=chineseRemainder(rem, fact)
 print(ans)
 
 # ans = sympy.ntheory.modular.crt(fact, rem)
