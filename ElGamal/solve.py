@@ -1,74 +1,103 @@
-# (167, 5, 9) 22
-# 1
-# [72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 33, 33]
-# (127, 3, 15) 88
-# 54
-# [22, 112, 33, 33, 108, 16, 108, 56, 33, 87, 63, 63]
-import sympy
+import math
 from functools import reduce
 
-def xgcd(a, b):
-    x0, y0, x1, y1 = 1, 0, 0, 1
-    while b != 0:
-        q, a, b = a // b, b, a % b
-        x0, x1 = x1, x0 - q * x1
-        y0, y1 = y1, y0 - q * y1
-    return a, x0, y0
+
+def init_eratosthenes(n):
+    mx = int(math.sqrt(n))+1
+    minf[0] = 0
+    minf[1] = 0
+    for i in range(2, mx):
+        if(minf[i] < i):
+            continue
+        for j in range(i*i, n+1, i):
+            if(minf[j] == j):
+                minf[j] = i
+
+
+def prime_factrize(n):
+    num = n
+    cnt = 0
+    p = minf[num]
+    if num <= 1:
+        return
+    while(num % p == 0):
+        # print(num)
+        num = int(num//p)
+        cnt += 1
+    prime.append(p)
+    prime_factrize(num)
+
+
+def egcd(m, n):
+    if n > 0:
+        y, x, d = egcd(n, m % n)
+        return (x, y-int(m//n)*x, d)
+    else:
+        return 1, 0, m
+
 
 def modinv(a, m):
-    g, x, y = xgcd(a, m)
-    if g != 1:
-        return -1
-    else:
-        return x % m
+    (inv, q, gcd_val) = egcd(a, m)
+    return inv % m
 
-def chineseRemainder(a, n):
-    total = 0
-    prod = reduce(lambda x, y: x*y, n)
-    for n_i, a_i in zip(n, a):
-        b_i = prod // n_i
-        total += a_i * b_i * modinv(b_i, n_i)
-    return total % prod
-# (64319, 13, 21858) 59517
-# (15000561895574197919, 7, 10744223873724438908) 2319733465746381622
-p = 15000561895574197919
-phi_p = p-1
-g = 7
-y = 10744223873724438908
 
-fact = []
-i = 2
+def chinese_remainder(Q, X):
+    r = 0
+    M = 1
+    for i in range(0, len(X)):
+        x, y, d = egcd(M, Q[i])
+        if (X[i]-r) % d != 0:
+            return 0
+        # print(d)
+        if(Q[i]!=0):
+            tmp = (int((X[i]-r)//d)*x) % (int(Q[i]//d))
+            r += M*tmp
+            M *= int(Q[i]//d)
+    return r % M
 
-q = p-1
-while(i*i <= phi_p):
-    if(q % i == 0):
-        fact.append(i)
-    while(q % i == 0):
-        q /= i
-    i += 1
-if(q!=1):
-    fact.append(int(q))
 
-print(fact)
+def baby_step_giant_step(g, y, p, q):
+    m = int(math.sqrt(q))+1
 
-rem = []
+    baby = {}
+    b = 1
+    for j in range(m):
+        baby[b] = j
+        b = (b * g) % p
 
-for f in fact:
-    y2 = pow(y, int(phi_p//f), p)
-    g2 = pow(g, int(phi_p//f), p)
-    # print(y2, g2)
-    c = 0
-    while(1):
-        c += 1
-        if(y2 == pow(g2, c, p)):
-            break
-    rem.append(c)
+    gm = pow(int(modinv(int(g), p)), m, int(p))
+    giant = y
+    for i in range(m):
+        if giant in baby:
+            x = i*m + baby[giant]
+            return x
+        else:
+            giant = (giant * gm) % p
+    return -1
 
-print(rem)
 
-ans=chineseRemainder(rem, fact)
-print(ans)
+def pohlig_hellman(p, g, y, Q):
+    print("[+] Q:", Q)
+    X = []
+    for q in Q:
+        x = baby_step_giant_step(
+            pow(g, int((p-1)//q), p), pow(y, int((p-1)//q), p), p, int(q))
+        X.append(x)
+    print("[+] X:", X)
+    x = chinese_remainder(Q, X)
+    return x
 
-# ans = sympy.ntheory.modular.crt(fact, rem)
 
-# print(ans)
+p = 167
+g = 5
+y = 63
+prime = []
+minf = list(range(0, p))
+# print(minf)
+init_eratosthenes(p-1)
+prime_factrize(p-1)
+# print(minf)
+x = pohlig_hellman(p, g, y, prime)
+print(x)
+
+# (167, 5, 63) 140
