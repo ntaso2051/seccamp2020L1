@@ -126,7 +126,7 @@ class Elgamal:
         self.Y = self.pos
         for i in range(self.x):
             self.Y = self.__ellipticAdd(self.Y, self.pos)
-        return (self.p, self.a, self.b, self.pos, self.Y), self.x
+        return (self.p, self.a, self.b, self.pos, self.Y, self.q2), self.x
 
     def encrypto(self, m):
         cipher2 = []

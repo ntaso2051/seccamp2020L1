@@ -1,68 +1,32 @@
-def egcd(m, n):
-    if n>0:
-        y,x,d = egcd(n, m%n)
-        return x, y-m/n*x, d
-    else:
-        return 1, 0, m
+import math
 
-
-def modinv(a, m):
-    (inv, q, gcd_val) = egcd(a, m)
-    return inv % m
-
-
-def chinese_remainder(Q, X):
-    P = reduce(lambda x,y: x*y, Q)
-    result = 0
-    for i in xrange(len(X)):
-        x, y, d = egcd(Q[i], P/Q[i])
-        result += y*(P/Q[i])*X[i]
-    return result % P
-
-
-# Baby-step giant-step
-def baby_step_giant_step(g, y, p, q):
-    m = int(q**0.5 + 1)
-    
-    # Baby-step
-    baby = {}
-    b = 1
-    for j in xrange(m):
-        baby[b] = j
-        b = (b * g) % p
-
-    # Giant-step
-    gm = pow(modinv(g, p), m, p)
-    giant = y
-    for i in xrange(m):
-        if giant in baby:
-            x = i*m + baby[giant]
-            print "Found:", x
-            return x
+def ellipticAdd(p1, p2):
+        l = -1
+        if(p1[0] == -1):
+            return p2
+        elif(p2[0] == -1):
+            return p1
+        elif(p1[0] == p2[0] and (p1[1]+p2[1]) % self.p == 0):
+            return (-1, -1)
+        elif(p1[0] == p2[0] and p1[1] == p2[1]):
+            l = (3*p1[0]*p1[0]+self.a) % self.p*pow(2*p1[1], -1, self.p)
         else:
-            giant = (giant * gm) % p
-    print "not found"
-    return -1
+            l = (p2[1]-p1[1]) % self.p*pow(p2[0]-p1[0], -1, self.p) % self.p
+        x4 = (l*l % self.p-p1[0]-p2[0]) % self.p
+        y4 = (l*(p1[0]-x4) % self.p-p1[1]) % self.p
+        return (x4, y4)
 
+def baby_step_giant_step(q, P, Q):
+    m=int(math.sqrt(q))+1
 
-# Pohlig-Hellman algorithm
-def pohlig_hellman(p, g, y, phi_p):
-    Q = map(int, phi_p.split(" * "))
-    print "[+] Q:", Q
-    X = []
-    for q in Q:
-        x = baby_step_giant_step(pow(g,(p-1)/q,p), pow(y,(p-1)/q,p), p, q)
-        X.append(x)
-    print "[+] X:", X
-    x = chinese_remainder(Q, X)
-    return x
-
-
-
-g = 5
-y = 63
-p = 167
-phi_p = "2 * 83"
-
-x = pohlig_hellman(p, g, y, phi_p)
-print(x)
+    baby=[]
+    b=Q
+    for j in range(m):
+        baby.append(b)
+        b=ellipticAdd(b, P)
+    
+    giant=P
+    for i in range(m):
+        giant=ellipticAdd(giant, P)
+    for i in range(1, m):
+        

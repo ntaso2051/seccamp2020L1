@@ -87,10 +87,10 @@ def pohlig_hellman(p, g, y, Q):
     x = chinese_remainder(Q, X)
     return x
 
-
-p = 167
+# (49103, 5, 28097) 9244
+p = 49103
 g = 5
-y = 63
+y = 28097
 prime = []
 minf = list(range(0, p))
 # print(minf)
