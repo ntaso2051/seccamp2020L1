@@ -37,7 +37,7 @@ def egcd(m, n):
 
 
 def modinv(a, m):
-    (inv, q, gcd_val) = egcd(a, m)
+    (inv, q, v) = egcd(a, m)
     return inv % m
 
 
@@ -77,13 +77,11 @@ def baby_step_giant_step(g, y, p, q):
 
 
 def pohlig_hellman(p, g, y, Q):
-    print("[+] Q:", Q)
     X = []
     for q in Q:
         x = baby_step_giant_step(
             pow(g, int((p-1)//q), p), pow(y, int((p-1)//q), p), p, int(q))
         X.append(x)
-    print("[+] X:", X)
     x = chinese_remainder(Q, X)
     return x
 
