@@ -159,7 +159,7 @@ class Elgamal:
 
 
 el = Elgamal()
-pk, sk = el.keygen(8)
+pk, sk = el.keygen(16)
 c1, c2 = el.encrypto('HelloWorld!!')
 print(pk, sk)
 print(c1)
