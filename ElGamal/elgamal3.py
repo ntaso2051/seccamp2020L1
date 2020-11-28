@@ -19,10 +19,7 @@ class Elgamal:
         self.poss = []
 
     def __is_even(self, n):
-        if n % 2 == 0:
-            return True
-        else:
-            return False
+        return n % 2 == 0
 
     def __is_prime(self, n):
         if n == 2:
