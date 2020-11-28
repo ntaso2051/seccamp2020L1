@@ -18,11 +18,11 @@ def ellipticAdd(p1, p2):
     return (x4, y4)
 
 
-def baby_step_giant_step(q, P, Q):
+def baby_step_giant_step(q, P, Y):
     m = int(math.sqrt(q))+1
 
     baby = []
-    b = Q
+    b = Y
     for j in range(m):
         baby.append(b)
         b = ellipticAdd(b, (P[0], (p-P[1]) % p))

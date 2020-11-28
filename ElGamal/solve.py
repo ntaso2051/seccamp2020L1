@@ -49,7 +49,7 @@ def chinese_remainder(Q, X):
         if (X[i]-r) % d != 0:
             return 0
         # print(d)
-        if(Q[i]!=0):
+        if(Q[i] != 0):
             tmp = (int((X[i]-r)//d)*x) % (int(Q[i]//d))
             r += M*tmp
             M *= int(Q[i]//d)
@@ -84,6 +84,7 @@ def pohlig_hellman(p, g, y, Q):
         X.append(x)
     x = chinese_remainder(Q, X)
     return x
+
 
 # (49103, 5, 28097) 9244
 p = 49103
